@@ -1,0 +1,25 @@
+before:
+  hooks:
+    - make test
+    - go generate ./...
+    - go mod tidy
+    - go mod download
+
+checksum:
+  algorithm: sha256
+  name_template: 'checksums.txt'
+
+snapshot:
+  name_template: "{{ .Tag }}-next"
+
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - '^docs:'
+      - '^test:'
+
+github_urls:
+  api: https://github.cwx.io/api/v3/
+  upload: https://github.cwx.io/api/uploads/
+  download: https://github.cwx.io/
