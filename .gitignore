@@ -3,3 +3,6 @@
 /artifacts/
 /dist/
 /plugins/
+/.makefiles
+/artifacts
+/dist

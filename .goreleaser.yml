@@ -1,6 +1,8 @@
+version: 2
+
 before:
   hooks:
-    - make test
+    - mage
     - go generate ./...
     - go mod tidy
     - go mod download
@@ -10,7 +12,7 @@ checksum:
   name_template: 'checksums.txt'
 
 snapshot:
-  name_template: "{{ .Tag }}-next"
+  version_template: "{{ .Tag }}-next"
 
 changelog:
   sort: asc
