@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"os"
 	"strconv"
-	"strings"
 )
 
 // Result contains the output used by Nagios.
@@ -12,7 +11,7 @@ type Result struct {
 	ExitCode  ExitCode
 	Text      string
 	Prefix    string
-	Perfdata  []string
+	Perfdata  Perfdata
 	Multiline []string
 }
 
@@ -87,7 +86,7 @@ func Sprint(res *Result) (string, int) {
 		exitCode = 3
 	}
 
-	perfData := strings.Join(res.Perfdata, " ")
+	perfData := res.Perfdata.String()
 
 	if len(res.Multiline) > 0 {
 		multiline := ""

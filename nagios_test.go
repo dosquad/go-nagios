@@ -36,7 +36,6 @@ func TestResults(t *testing.T) {
 	}
 
 	for _, tt := range tests {
-		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 
@@ -68,7 +67,6 @@ func TestNagiosSprint(t *testing.T) {
 	}
 
 	for _, tt := range tests {
-		tt := tt
 		t.Run(fmt.Sprintf("%d", tt.exitVal), func(t *testing.T) {
 			t.Parallel()
 
@@ -79,7 +77,7 @@ func TestNagiosSprint(t *testing.T) {
 
 			output, exitCode := nagios.Sprint(res)
 
-			expectMessage := fmt.Sprintf("%s: exit message|\n", exitVal.String())
+			expectMessage := exitVal.String() + ": exit message|\n"
 			if int(exitVal) != int(tt.expectVal) {
 				expectMessage = fmt.Sprintf("%s: Exit code '%d' is not valid :exit message|\n", exitVal.String(), exitVal)
 				exitVal = nagios.UNKNOWN
@@ -109,7 +107,7 @@ func TestNagiosSprint_Multiline(t *testing.T) {
 
 	output, exitCode := nagios.Sprint(res)
 
-	expectMessage := fmt.Sprintf("%s: exit message|\nline 1\nline 2\n\n", exitVal.String())
+	expectMessage := exitVal.String() + ": exit message|\nline 1\nline 2\n\n"
 	if !exitVal.Equal(exitCode) {
 		t.Errorf("nagios.Exit: exitVal got '%d', want '%d'", exitCode, exitVal)
 	}
@@ -131,7 +129,7 @@ func TestNagiosSprint_Perfdata(t *testing.T) {
 
 	output, exitCode := nagios.Sprint(res)
 
-	expectMessage := fmt.Sprintf("%s: exit message|key1=value1 key2=value2\n", exitVal.String())
+	expectMessage := exitVal.String() + ": exit message|key1=value1 key2=value2\n"
 	if !exitVal.Equal(exitCode) {
 		t.Errorf("nagios.Exit: exitVal got '%d', want '%d'", exitCode, exitVal)
 	}
@@ -155,7 +153,7 @@ func TestNagiosSprint_Multiline_Perfdata(t *testing.T) {
 
 	output, exitCode := nagios.Sprint(res)
 
-	expectMessage := fmt.Sprintf("%s: exit message|key1=value1 key2=value2\nline 1\nline 2\n\n", exitVal.String())
+	expectMessage := exitVal.String() + ": exit message|key1=value1 key2=value2\nline 1\nline 2\n\n"
 	if !exitVal.Equal(exitCode) {
 		t.Errorf("nagios.Exit: exitVal got '%d', want '%d'", exitCode, exitVal)
 	}
@@ -175,7 +173,7 @@ func TestNagiosSprint_Error(t *testing.T) {
 
 	output, exitCode := nagios.Sprint(res)
 
-	expectMessage := fmt.Sprintf("%s: I'm a little error teapot|\n", exitVal.String())
+	expectMessage := exitVal.String() + ": I'm a little error teapot|\n"
 	if !exitVal.Equal(exitCode) {
 		t.Errorf("nagios.Exit: exitVal got '%d', want '%d'", exitCode, exitVal)
 	}
@@ -197,7 +195,7 @@ func TestNagiosPrint(t *testing.T) {
 
 	exitPrintCode := nagios.Print(res)
 
-	expectMessage := fmt.Sprintf("%s: I'm a little error teapot|\n", exitVal.String())
+	expectMessage := exitVal.String() + ": I'm a little error teapot|\n"
 	if !exitVal.Equal(exitCode) {
 		t.Errorf("nagios.Exit: exitVal got '%d', want '%d'", exitCode, exitVal)
 	}
