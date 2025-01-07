@@ -18,15 +18,13 @@ type Result struct {
 // SetExitCode sets the exit code only if it is greater than the current value
 // (so you can set WARNING early in a function and you won't accidentally set it OK later).
 func (r *Result) SetExitCode(exitCode ExitCode) {
-	if r.ExitCode.IsGreater(exitCode.Int()) {
+	if exitCode.IsGreaterCode(r.ExitCode) {
 		r.ExitCode = exitCode
 	}
 }
 
 func (r *Result) SetExitCodeInt(exitCode int) {
-	if r.ExitCode.IsGreater(exitCode) {
-		r.ExitCode = ExitCode(exitCode)
-	}
+	r.SetExitCode(ExitCode(exitCode))
 }
 
 // GetExitCode retrieves the exit code.

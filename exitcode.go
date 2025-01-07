@@ -1,6 +1,8 @@
 package nagios
 
-import "strings"
+import (
+	"strings"
+)
 
 // ExitCode is an extension of int with some helpers for
 // use with Nagios exit codes.
@@ -38,10 +40,24 @@ func (e ExitCode) Int() int {
 	return int(UNKNOWN)
 }
 
-// IsGreater returns true if the a is a greater exit value than
-// ExitCode.
+// IsGreater returns true if the ExitCode is a greater than
+// the supplied exit code.
 func (e ExitCode) IsGreater(a int) bool {
-	return a > int(e)
+	return e.IsGreaterCode(ExitCode(a))
+}
+
+// IsGreaterCode returns true if the ExitCode is a greater than
+// the supplied exit code.
+func (e ExitCode) IsGreaterCode(exitCode ExitCode) bool {
+	if e < 0 && exitCode == 0 {
+		return true
+	}
+
+	if exitCode < 0 {
+		return false
+	}
+
+	return e > exitCode
 }
 
 // Equal returns true if a is equal to ExitCode.
@@ -76,6 +92,17 @@ func ExitCodeFromString(exitCode string) ExitCode {
 		return CRITICAL
 	case unknownString:
 		return UNKNOWN
+	}
+
+	return UNKNOWN
+}
+
+// ExitCodeFromInt converts a supplied int to an ExitCode.
+func ExitCodeFromInt(exitCode int) ExitCode {
+	v := ExitCode(exitCode)
+	switch v {
+	case OK, WARNING, CRITICAL, UNKNOWN:
+		return v
 	}
 
 	return UNKNOWN

@@ -95,6 +95,32 @@ func TestNagiosSprint(t *testing.T) {
 	}
 }
 
+func TestNagiosExitCodeNegative(t *testing.T) {
+	t.Parallel()
+
+	res := &nagios.Result{}
+	exitVal := nagios.ExitCode(-1)
+	expectCode := nagios.UNKNOWN
+	res.SetExitCode(exitVal)
+	res.SetText("exit message")
+
+	output, exitCode := nagios.Sprint(res)
+
+	expectMessage := expectCode.String() + ": exit message|\n"
+	if int(expectCode) != int(exitVal) {
+		expectMessage = fmt.Sprintf("%s: Exit code '%d' is not valid :exit message|\n", expectCode.String(), exitVal)
+	}
+
+	// t.Logf("nagios.Exit: exitVal got '%d'", exitCode)
+	if !expectCode.Equal(exitCode) {
+		t.Errorf("nagios.Exit: exitVal got '%d', want '%d'", exitCode, expectCode)
+	}
+
+	if diff := cmp.Diff(output, expectMessage); diff != "" {
+		t.Errorf("nagios.Exit: output -got +want:\n%s", diff)
+	}
+}
+
 func TestNagiosSprint_Multiline(t *testing.T) {
 	t.Parallel()
 
